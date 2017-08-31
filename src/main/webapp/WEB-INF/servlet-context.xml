@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- <beans:import resource="classpath:application-context.xml"/> -->
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="jsonMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<beans:bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</beans:bean>
+	<beans:bean id="authProps"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<beans:property name="location"
+			value="file:#{systemProperties['jboss.server.base.dir']}/configuration/fig/NewFigCredentials.properties" />
+	</beans:bean>
+	<beans:bean id="adminProps"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<beans:property name="location"
+			value="file:#{systemProperties['jboss.server.base.dir']}/configuration/fig/BlackoutServices.properties" />
+	</beans:bean>
+
+	<context:component-scan base-package="com.cox.fscm" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<beans:bean id="transactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager">
+	</beans:bean>
+
+	<jee:jndi-lookup jndi-name="jboss/datasources/CapacityManagementDS"
+		id="dataSource" />
+
+	<beans:bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="jtaTransactionManager" ref="transactionManager" />
+		<beans:property name="packagesToScan" value="com.cox.fscm" />
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">false</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+</beans:beans>

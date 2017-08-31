@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+
+<Appenders>
+<RollingFile name="FSCMADMINBLACKOUT_transaction" fileName="/opt/app/jboss/current/standalone/log/FSCMADMINBLACKOUT_transaction.log" filePattern="/opt/app/jboss/current/standalone/log/FSCMADMINBLACKOUT_transaction-%d{yyyy-MM-dd}.log">
+	<PatternLayout>
+		<pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %5p %C :: %M :%L - %m%n</pattern>
+	</PatternLayout>
+	<Policies>
+		<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+	</Policies>
+</RollingFile>
+</Appenders>
+<Loggers>
+	<Logger name="FSCMADMINBLACKOUT_transaction" level="info" additivity="false">
+		<appender-ref ref="FSCMADMINBLACKOUT_transaction" level="all"/>
+		<appender-ref ref="CONSOLE" level="all"/>		
+	</Logger>
+	<root>        
+	 	<priority value="info" />       
+		<appender-ref ref="FSCMADMINBLACKOUT_transaction" />
+		<appender-ref ref="CONSOLE"/> 		
+	</root> 
+</Loggers>
+</Configuration>

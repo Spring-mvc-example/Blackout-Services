@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+  <deployment>
+    <dependencies>
+   	    <module name="com.cox.commons.spring4_0_3" >
+               <imports>
+                   <include path="META-INF**"/>
+                   <include path="org**"/>
+                   <include path="com**"/>
+               </imports>
+       	</module>
+	 	<!-- <module name="org.jboss.vfs" />
+		<module name="org.apache.commons.pool"/>
+		<module name="org.javassist"/> 
+		<module name="com.cox.commons.logconfiguration"/> -->
+		
+		<module name="org.apache.commons.codec"/> 
+		  <module name="org.apache.commons.lang"/> 
+        <module name="com.cox.commons.loggingutil"/> 
+        <module name="com.cox.commons.oracle"/>
+        <module name="org.apache.commons.collections"/> 
+        <!-- <module name="org.apache.httpcomponents"/>
+        -->
+      </dependencies>
+  </deployment>
+</jboss-deployment-structure>
